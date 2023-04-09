@@ -1,0 +1,36 @@
+version: '2.4'
+
+services:
+
+  app:
+    container_name: spotify-shuffler-app
+    hostname: spotify-shuffler-app
+    image: flakooo/myprojects:spotify-shuffler-app
+    restart: always
+    depends_on:
+      - db
+    volumes:
+      - "..:/opt/spotify-shuffler"
+    environment:
+      DB_HOST: "spotify-shuffler-db"
+      DB_PORT: "3306"
+      DJANGO_SUPERUSER_USERNAME: "admin"
+      DJANGO_SUPERUSER_PASSWORD: "1122"
+      DJANGO_SUPERUSER_EMAIL: "name@gmail.com"
+    ports:
+      - "8088:8088"
+
+  db:
+    container_name: spotify-shuffler-db
+    hostname: spotify-shuffler-db
+    image: flakooo/myprojects:spotify-shuffler-db
+    restart: always
+    volumes:
+      - "db_data:/var/lib/mysql"
+    environment:
+      MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:
