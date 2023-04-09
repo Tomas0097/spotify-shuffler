@@ -22,8 +22,8 @@ migrate:
 create_default_superuser:
 	$(manage_command) createsuperuser --noinput
 
-pip_install:
-	docker exec -it spotify-shuffler-app /pip.sh
+#pip_install:
+#	docker exec -it spotify-shuffler-app /pip.sh
 
 app_bash:
 	docker exec -it spotify-shuffler-app bash
