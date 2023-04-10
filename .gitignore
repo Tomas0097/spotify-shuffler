@@ -6,3 +6,9 @@ __pycache__/
 
 # MacOS bullshits
 .DS_Store
+
+# NPM
+src/node_modules
+
+# Compiled code
+src/web/static/dist

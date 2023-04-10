@@ -9,6 +9,7 @@ services:
     restart: always
     depends_on:
       - db
+      - webpack
     volumes:
       - "..:/opt/spotify-shuffler"
     environment:
@@ -31,6 +32,14 @@ services:
       MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: "yes"
     ports:
       - "3306:3306"
+
+  webpack:
+    container_name: spotify-shuffler-webpack
+    hostname: spotify-shuffler-webpack
+    image: flakooo/myprojects:spotify-shuffler-webpack
+    restart: always
+    volumes:
+      - "..:/opt/spotify-shuffler"
 
 volumes:
   db_data:
