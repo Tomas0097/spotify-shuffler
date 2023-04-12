@@ -1,13 +1,12 @@
-<!DOCTYPE html>
 {% load static %}
-
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <title>Index</title>
     </head>
     <body>
-        <button onclick="startSpotifyAuthorizing()">Link Spotify Account</button>
+        <button onclick="spotifyShuffler.startSpotifyAuthorizing()">Link Spotify Account</button>
 
         <script type="text/javascript" src="{% static 'dist/js/build.js' %}?v={{ CURRENT_FRONTEND_VERSION }}"></script>
     </body>

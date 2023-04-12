@@ -1,4 +1,4 @@
-function startSpotifyAuthorizing() {
+export function startSpotifyAuthorizing() {
   function generateRandomString(length) {
     let text = '';
     let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
