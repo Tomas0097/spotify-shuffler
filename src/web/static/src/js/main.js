@@ -26,7 +26,7 @@ export function startSpotifyAuthorizing() {
 
 
   const clientId = '77aee9b86365440d8b2849e168d01dee';
-  const redirectUri = 'http://127.0.0.1/8088';
+  const redirectUri = 'http://localhost:8088';
 
   let codeVerifier = generateRandomString(128);
 
