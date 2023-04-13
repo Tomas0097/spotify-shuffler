@@ -6,7 +6,8 @@
         <title>Index</title>
     </head>
     <body>
-        <button onclick="spotifyShuffler.startSpotifyAuthorizing()">Link Spotify Account</button>
+        {% block content %}
+        {% endblock %}
 
         <script type="text/javascript" src="{% static 'dist/js/build.js' %}?v={{ CURRENT_FRONTEND_VERSION }}"></script>
     </body>
