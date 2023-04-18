@@ -1,5 +1,10 @@
 {% extends "base-layout.html" %}
 
 {% block content %}
-    <button onclick="spotifyShuffler.startSpotifyAuthorizing()">Link Spotify Account</button>
+{#    <button onclick="spotifyShuffler.startSpotifyAuthorizing()">Link Spotify Account</button>#}
+{#    <button onclick="spotifyShuffler.startSpotifyAuthorizing()">Link Spotify Account</button>#}
+
+    <a href="{% url 'web:spotify-auth' %}">
+        <button>Link Spotify Account</button>
+    </a>
 {% endblock %}
