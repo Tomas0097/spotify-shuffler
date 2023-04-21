@@ -2,6 +2,7 @@ import requests
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import TemplateView, View
+from django.urls import reverse
 from django.utils.http import urlencode, urlsafe_base64_encode
 
 
@@ -13,9 +14,9 @@ class SpotifyAuthView(View):
         client_id = "77aee9b86365440d8b2849e168d01dee"
         client_secret_key = "2bcf35e555234fa3a32ea87d28117cc7"
         redirect_uri = "http://localhost:8088/spotify-auth"
+        redirect_url_homepage = reverse("web:homepage")
 
         authorization_code = request.GET.get("code")
-        access_token = request.GET.get("access_token")
         error = request.GET.get("error")
 
         if authorization_code:
@@ -29,16 +30,15 @@ class SpotifyAuthView(View):
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": "Basic " + urlsafe_base64_encode(f"{client_id}:{client_secret_key}".encode())
             }
-
             response = requests.post(spotify_access_token_url, headers=headers, data=url_encoded_parameters)
 
             if response.status_code == 200:
-                return HttpResponse()
-            else:
-                return HttpResponse()
+                response_json = response.json()
+                request.session["access_token"] = response_json["access_token"]
 
-        elif access_token:
-            return HttpResponse()
+                return HttpResponseRedirect(redirect_url_homepage)
+            else:
+                return HttpResponseRedirect(redirect_url_homepage)
 
         elif error:
             return HttpResponse()
