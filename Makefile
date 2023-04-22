@@ -28,6 +28,9 @@ create_default_superuser:
 app_bash:
 	docker exec -it spotify-shuffler-app bash
 
+black:
+	docker exec -it spotify-shuffler-app /black.sh
+
 test:
 	$(manage_command) test
 

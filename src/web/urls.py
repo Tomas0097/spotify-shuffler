@@ -11,9 +11,5 @@ urlpatterns = [
         views.HomepageView.as_view(),
         name="homepage",
     ),
-    path(
-        "spotify-auth/",
-        views.SpotifyAuthView.as_view(),
-        name="spotify-auth"
-    )
+    path("spotify-auth/", views.SpotifyAuthView.as_view(), name="spotify-auth"),
 ]
