@@ -40,7 +40,3 @@ class ProfileView(TemplateView):
         context_data.update({"profile_name": profile_data["display_name"]})
 
         return context_data
-
-class SpotifyAPIView(View):
-    def get(self, request, *args, **kwargs):
-        pass
