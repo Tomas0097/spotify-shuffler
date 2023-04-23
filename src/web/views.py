@@ -5,6 +5,7 @@ from django.views.generic import TemplateView, View
 from django.urls import reverse
 from django.utils.http import urlencode, urlsafe_base64_encode
 
+from web.spotify_client import SpotifyClient
 
 class HomepageView(TemplateView):
     template_name = "homepage.html"
@@ -39,8 +40,8 @@ class SpotifyAuthView(View):
             )
 
             if response.status_code == 200:
-                response_json = response.json()
-                request.session["access_token"] = response_json["access_token"]
+                response_data = response.json()
+                request.session["access_token"] = response_data["access_token"]
 
                 return HttpResponseRedirect(redirect_url_homepage)
             else:
@@ -70,3 +71,20 @@ class SpotifyAuthView(View):
             )
 
             return HttpResponseRedirect(spotify_auth_url)
+
+
+class ProfileView(TemplateView):
+    template_name = "profile.html"
+
+    def get_context_data(self, **kwargs):
+        access_token = self.request.session.get("access_token")
+        profile_data = SpotifyClient(access_token).get_user_profile()
+
+        context_data = super().get_context_data(**kwargs)
+        context_data.update({"profile_name": profile_data["display_name"]})
+
+        return context_data
+
+class SpotifyAPIView(View):
+    def get(self, request, *args, **kwargs):
+        pass
