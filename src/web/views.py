@@ -4,6 +4,7 @@ from django.urls import reverse
 
 from web.spotify_client import SpotifyClient
 
+
 class HomepageView(TemplateView):
     template_name = "homepage.html"
 
