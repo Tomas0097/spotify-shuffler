@@ -26,12 +26,6 @@ class SpotifyClient:
             # TODO: Handle this error.
             pass
 
-    def get_user_profile(self) -> dict:
-        endpoint = self.api_url + "me"
-        data = self._send_request(endpoint)
-
-        return data
-
     def get_authorization_url(self) -> str:
         # TODO: The state should be randomly generated 16 character long string. Saving this value
         #       before requesting Spotify auth and verifying the match in the callback is very
@@ -74,3 +68,9 @@ class SpotifyClient:
         else:
             # TODO: Handle this error.
             pass
+
+    def get_user_profile(self) -> dict:
+        endpoint = self.api_url + "me"
+        data = self._send_request(endpoint)
+
+        return data
