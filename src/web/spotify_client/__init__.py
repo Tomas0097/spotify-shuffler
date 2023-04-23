@@ -15,13 +15,12 @@ class SpotifyClient:
         self.access_token = access_token
 
     # TODO: Rename to '_fetch_data'
-    def _send_request(self, url: str) -> dict:
+    def _fetch_data(self, url: str) -> dict:
         if self.access_token:
             headers = {"Authorization": "Bearer " + self.access_token}
             response = requests.get(url, headers=headers)
-            response_data = response.json()
 
-            return response_data
+            return response.json()
         else:
             # TODO: Handle this error.
             pass
@@ -71,6 +70,6 @@ class SpotifyClient:
 
     def get_user_profile(self) -> dict:
         endpoint = self.api_url + "me"
-        data = self._send_request(endpoint)
+        data = self._fetch_data(endpoint)
 
         return data
