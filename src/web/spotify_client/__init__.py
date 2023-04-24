@@ -13,15 +13,28 @@ class SpotifyClient:
     def __init__(self, access_token=None):
         self.access_token = access_token
 
-    def _send_request(self, method: str, url: str) -> dict:
+    def _send_request(
+        self, method: str, url: str, data=None, authorization=False
+    ) -> dict:
         if self.access_token:
             headers = {"Authorization": "Bearer " + self.access_token}
-            response = requests.request(method, url, headers=headers)
 
-            return response.json()
+        elif authorization:
+            headers = {
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Authorization": "Basic "
+                + urlsafe_base64_encode(
+                    f"{self.client_id}:{self.client_secret_key}".encode()
+                ),
+            }
+
         else:
             # TODO: Handle this error.
-            pass
+            return {}
+
+        response = requests.request(method, url, headers=headers, data=data)
+
+        return response.json()
 
     def get_authorization_url(self) -> str:
         # TODO: The state should be randomly generated 16 character long string. Saving this value
@@ -40,34 +53,18 @@ class SpotifyClient:
 
         return "https://accounts.spotify.com/authorize?" + url_encoded_parameters
 
-    def get_access_token(self, authorization_code):
-        url_encoded_parameters = urlencode(
-            {
-                "code": authorization_code,
-                "redirect_uri": self.redirect_uri,
-                "grant_type": "authorization_code",
-            }
-        )
-        spotify_access_token_url = "https://accounts.spotify.com/api/token"
-        headers = {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Authorization": "Basic "
-            + urlsafe_base64_encode(
-                f"{self.client_id}:{self.client_secret_key}".encode()
-            ),
+    def get_access_token(self, authorization_code) -> str:
+        access_token_url = "https://accounts.spotify.com/api/token"
+        data = {
+            "code": authorization_code,
+            "redirect_uri": self.redirect_uri,
+            "grant_type": "authorization_code",
         }
-        response = requests.post(
-            spotify_access_token_url, headers=headers, data=url_encoded_parameters
+        response_data = self._send_request(
+            "post", access_token_url, data=data, authorization=True
         )
 
-        if response.status_code == 200:
-            response_data = response.json()
-
-            return response_data["access_token"]
-
-        else:
-            # TODO: Handle this error.
-            pass
+        return response_data["access_token"]
 
     def get_user_profile(self) -> dict:
         endpoint = self.api_url + "me"
