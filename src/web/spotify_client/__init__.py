@@ -32,9 +32,7 @@ class SpotifyClient:
             # TODO: Handle this error.
             return {}
 
-        response = requests.request(method, url, headers=headers, data=data)
-
-        return response.json()
+        return requests.request(method, url, headers=headers, data=data).json()
 
     def get_authorization_url(self) -> str:
         # TODO: The state should be randomly generated 16 character long string. Saving this value
