@@ -13,11 +13,10 @@ class SpotifyClient:
     def __init__(self, access_token=None):
         self.access_token = access_token
 
-    # TODO: Rename to '_fetch_data'
-    def _fetch_data(self, url: str) -> dict:
+    def _send_request(self, method: str, url: str) -> dict:
         if self.access_token:
             headers = {"Authorization": "Bearer " + self.access_token}
-            response = requests.get(url, headers=headers)
+            response = requests.request(method, url, headers=headers)
 
             return response.json()
         else:
@@ -73,4 +72,4 @@ class SpotifyClient:
     def get_user_profile(self) -> dict:
         endpoint = self.api_url + "me"
 
-        return self._fetch_data(endpoint)
+        return self._send_request("get", endpoint)
