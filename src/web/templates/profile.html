@@ -1,6 +1,9 @@
 {% extends "base-layout.html" %}
 
 {% block content %}
-    <b>Profile</b><br><br>
+    <b>Profile</b>
+    <br><br>
     <b>name</b>: {{ profile_name }}
+    <br><br>
+    <a href="{% url 'web:spotify-logout' %}"><button>Logout</button></a>
 {% endblock %}

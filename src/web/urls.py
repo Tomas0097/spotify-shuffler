@@ -13,4 +13,5 @@ urlpatterns = [
     ),
     path("profile/", views.ProfileView.as_view(), name="profile"),
     path("spotify-auth/", views.SpotifyAuthView.as_view(), name="spotify-auth"),
+    path("spotify-logout/", views.SpotifyLogoutView.as_view(), name="spotify-logout"),
 ]

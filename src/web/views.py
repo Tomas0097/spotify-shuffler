@@ -30,6 +30,13 @@ class SpotifyAuthView(View):
             return HttpResponseRedirect(spotify_authorization_url)
 
 
+class SpotifyLogoutView(View):
+    def get(self, request, *args, **kwargs):
+        del(request.session["access_token"])
+
+        return HttpResponseRedirect(reverse("web:homepage"))
+
+
 class ProfileView(TemplateView):
     template_name = "profile.html"
 
@@ -39,5 +46,8 @@ class ProfileView(TemplateView):
 
         context_data = super().get_context_data(**kwargs)
         context_data.update({"profile_name": profile_data["display_name"]})
+
+        print(dict(self.request.session))
+        # del(self.request.session["_auth_user_id"])
 
         return context_data
