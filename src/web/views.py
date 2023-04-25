@@ -16,7 +16,7 @@ class SpotifyAuthView(View):
 
         if authorization_code:
             user_access_token = SpotifyClient().get_access_token(authorization_code)
-            request.session["access_token"] = user_access_token
+            request.session["access_token"] = user_access_token # Creating session
 
             return HttpResponseRedirect(reverse("web:profile"))
 
