@@ -16,10 +16,7 @@ class SpotifyClient:
     def _send_request(
         self, method: str, url: str, data=None, authorization=False
     ) -> dict:
-        if self.access_token:
-            headers = {"Authorization": "Bearer " + self.access_token}
-
-        elif authorization:
+        if authorization:
             headers = {
                 "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": "Basic "
@@ -27,6 +24,9 @@ class SpotifyClient:
                     f"{self.client_id}:{self.client_secret_key}".encode()
                 ),
             }
+
+        elif self.access_token:
+            headers = {"Authorization": "Bearer " + self.access_token}
 
         else:
             # TODO: Handle this error.
@@ -39,7 +39,7 @@ class SpotifyClient:
         #       before requesting Spotify auth and verifying the match in the callback is very
         #       recommended by Spotify API documentation.
         state = "abcdefghijklmnop"
-        url_encoded_parameters = urlencode(
+        params = urlencode(
             {
                 "response_type": "code",
                 "client_id": self.client_id,
@@ -49,22 +49,22 @@ class SpotifyClient:
             }
         )
 
-        return "https://accounts.spotify.com/authorize?" + url_encoded_parameters
+        return "https://accounts.spotify.com/authorize?" + params
 
     def get_access_token(self, authorization_code) -> str:
-        access_token_url = "https://accounts.spotify.com/api/token"
+        endpoint = "https://accounts.spotify.com/api/token"
         data = {
             "code": authorization_code,
             "redirect_uri": self.redirect_uri,
             "grant_type": "authorization_code",
         }
         response_data = self._send_request(
-            "post", access_token_url, data=data, authorization=True
+            "post", endpoint, data=data, authorization=True
         )
 
         return response_data["access_token"]
 
-    def get_user_profile(self) -> dict:
+    def get_user_profile_data(self) -> dict:
         endpoint = self.api_url + "me"
 
         return self._send_request("get", endpoint)

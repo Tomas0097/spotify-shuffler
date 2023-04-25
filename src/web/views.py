@@ -9,8 +9,21 @@ class HomepageView(TemplateView):
     template_name = "homepage.html"
 
 
+class ProfileView(TemplateView):
+    template_name = "profile.html"
+
+    def get_context_data(self, **kwargs):
+        access_token = self.request.session.get("access_token")
+        profile_data = SpotifyClient(access_token=access_token).get_user_profile_data()
+
+        context_data = super().get_context_data(**kwargs)
+        context_data.update({"profile_name": profile_data["display_name"]})
+
+        return context_data
+
+
 class SpotifyAuthView(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         authorization_code = request.GET.get("code")
         error = request.GET.get("error")
 
@@ -31,23 +44,7 @@ class SpotifyAuthView(View):
 
 
 class SpotifyLogoutView(View):
-    def get(self, request, *args, **kwargs):
-        del(request.session["access_token"])
+    def get(self, request):
+        del request.session["access_token"]
 
         return HttpResponseRedirect(reverse("web:homepage"))
-
-
-class ProfileView(TemplateView):
-    template_name = "profile.html"
-
-    def get_context_data(self, **kwargs):
-        access_token = self.request.session.get("access_token")
-        profile_data = SpotifyClient(access_token=access_token).get_user_profile()
-
-        context_data = super().get_context_data(**kwargs)
-        context_data.update({"profile_name": profile_data["display_name"]})
-
-        print(dict(self.request.session))
-        # del(self.request.session["_auth_user_id"])
-
-        return context_data
