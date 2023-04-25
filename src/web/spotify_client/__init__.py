@@ -13,9 +13,7 @@ class SpotifyClient:
     def __init__(self, access_token=None):
         self.access_token = access_token
 
-    def _send_request(
-        self, method: str, url: str, data=None, authorization=False
-    ) -> dict:
+    def _send_request(self, method, url, data=None, authorization=False) -> dict:
         if authorization:
             headers = {
                 "Content-Type": "application/x-www-form-urlencoded",
