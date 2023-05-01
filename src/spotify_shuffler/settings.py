@@ -27,9 +27,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-#vhgws=px$z11#up2a77v!*zdmtq5d3y!r7t!wicwnw8)9m^re"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1"]
 
 # This fixes the issue where Django debug toolbar is not showing due to the Docker implementation.
 if DEBUG:
@@ -62,6 +62,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "web.spotify_client.middleware.SpotifyClientMiddleware",
 ]
 
 ROOT_URLCONF = "spotify_shuffler.urls"

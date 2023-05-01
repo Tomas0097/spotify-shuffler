@@ -2,6 +2,7 @@ import requests
 
 from django.utils.http import urlencode, urlsafe_base64_encode
 
+from web.spotify_client.exceptions import SpotifyUnauthorizedRequest
 
 class SpotifyClient:
     api_scope = "user-read-private user-read-email"
@@ -23,14 +24,18 @@ class SpotifyClient:
                 ),
             }
 
-        elif self.access_token:
-            headers = {"Authorization": "Bearer " + self.access_token}
-
         else:
-            # TODO: Handle this error.
-            return {}
+            headers = {"Authorization": "Bearer " + self.access_token + "x"}
 
-        return requests.request(method, url, headers=headers, data=data).json()
+        print("xxxx")
+
+        response = requests.request(method, url, headers=headers, data=data)
+
+        if response.status_code == 401:
+            print("401")
+            raise SpotifyUnauthorizedRequest()
+
+        return response.json()
 
     def get_authorization_url(self) -> str:
         # TODO: The state should be randomly generated 16 character long string. Saving this value
