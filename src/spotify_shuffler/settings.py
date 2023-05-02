@@ -29,7 +29,7 @@ SECRET_KEY = "django-insecure-#vhgws=px$z11#up2a77v!*zdmtq5d3y!r7t!wicwnw8)9m^re
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 # This fixes the issue where Django debug toolbar is not showing due to the Docker implementation.
 if DEBUG:

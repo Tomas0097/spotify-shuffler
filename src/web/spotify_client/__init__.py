@@ -25,14 +25,11 @@ class SpotifyClient:
             }
 
         else:
-            headers = {"Authorization": "Bearer " + self.access_token + "x"}
-
-        print("xxxx")
+            headers = {"Authorization": "Bearer " + self.access_token}
 
         response = requests.request(method, url, headers=headers, data=data)
 
         if response.status_code == 401:
-            print("401")
             raise SpotifyUnauthorizedRequest()
 
         return response.json()

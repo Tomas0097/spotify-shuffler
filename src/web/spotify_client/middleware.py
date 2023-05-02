@@ -10,16 +10,10 @@ class SpotifyClientMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        try:
-            response = self.get_response(request)
+        return self.get_response(request)
 
-            print("Custom middleware - 1")
+    def process_exception(self, request, exception):
+        if isinstance(exception, SpotifyUnauthorizedRequest):
+            return redirect(reverse("web:homepage"))
 
-        except SpotifyUnauthorizedRequest:
-
-            print("Custom middleware - 2")
-
-            # return redirect(reverse("web:homepage"))
-            HttpResponse()
-
-        return response
+        return None
