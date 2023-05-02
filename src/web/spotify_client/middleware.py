@@ -1,9 +1,8 @@
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from django.http.response import HttpResponse
-
 from web.spotify_client.exceptions import SpotifyUnauthorizedRequest
+
 
 class SpotifyClientMiddleware:
     def __init__(self, get_response):

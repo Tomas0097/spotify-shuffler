@@ -4,6 +4,7 @@ from django.utils.http import urlencode, urlsafe_base64_encode
 
 from web.spotify_client.exceptions import SpotifyUnauthorizedRequest
 
+
 class SpotifyClient:
     api_scope = "user-read-private user-read-email"
     api_url = "https://api.spotify.com/v1/"

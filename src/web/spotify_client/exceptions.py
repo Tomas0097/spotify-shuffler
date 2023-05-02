@@ -1,3 +1,2 @@
-
 class SpotifyUnauthorizedRequest(Exception):
     pass
