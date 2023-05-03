@@ -13,6 +13,6 @@ class SpotifyClientMiddleware:
 
     def process_exception(self, request, exception):
         if isinstance(exception, SpotifyUnauthorizedRequest):
-            return redirect(reverse("web:homepage"))
+            return redirect(reverse("web:spotify-session-ended"))
 
         return None

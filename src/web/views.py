@@ -48,3 +48,7 @@ class SpotifyLogoutView(View):
         del request.session["access_token"]
 
         return HttpResponseRedirect(reverse("web:homepage"))
+
+
+class SpotifySessionEnded(TemplateView):
+    template_name = "spotify-session-ended.html"
