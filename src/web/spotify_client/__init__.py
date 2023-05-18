@@ -13,8 +13,8 @@ class SpotifyClient:
     client_secret_key = "2bcf35e555234fa3a32ea87d28117cc7"
     redirect_uri = "http://localhost:8088/spotify-auth"
 
-    def __init__(self, access_token=""):
-        self.access_token = access_token
+    def __init__(self, user_access_token=""):
+        self.user_access_token = user_access_token
 
     @staticmethod
     def _send_request(method, url, headers, data=None) -> Response:
@@ -26,7 +26,7 @@ class SpotifyClient:
         return response
 
     def _get_data(self, endpoint) -> dict:
-        headers = {"Authorization": "Bearer " + self.access_token}
+        headers = {"Authorization": "Bearer " + self.user_access_token}
         response = self._send_request("get", endpoint, headers)
 
         return response.json()
@@ -48,7 +48,7 @@ class SpotifyClient:
 
         return "https://accounts.spotify.com/authorize?" + params
 
-    def get_access_token(self, authorization_code) -> str:
+    def get_user_access_token(self, authorization_code) -> str:
         endpoint = "https://accounts.spotify.com/api/token"
         headers = {
             "Content-Type": "application/x-www-form-urlencoded",
