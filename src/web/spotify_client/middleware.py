@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.urls import reverse
 
-from web.spotify_client.exceptions import SpotifyUnauthorizedRequest
+from web.spotify_client.exceptions import SpotifyWrongResponse
 
 
 class SpotifyClientMiddleware:
@@ -12,7 +12,7 @@ class SpotifyClientMiddleware:
         return self.get_response(request)
 
     def process_exception(self, request, exception):
-        if isinstance(exception, SpotifyUnauthorizedRequest):
-            return redirect(reverse("web:spotify-session-ended"))
+        if isinstance(exception, SpotifyWrongResponse):
+            return redirect(reverse("web:spotify-session-error"))
 
         return None

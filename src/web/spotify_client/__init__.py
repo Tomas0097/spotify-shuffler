@@ -1,8 +1,9 @@
 import requests
+from requests.models import Response
 
 from django.utils.http import urlencode, urlsafe_base64_encode
 
-from web.spotify_client.exceptions import SpotifyUnauthorizedRequest
+from web.spotify_client.exceptions import SpotifyWrongResponse
 
 
 class SpotifyClient:
@@ -12,26 +13,21 @@ class SpotifyClient:
     client_secret_key = "2bcf35e555234fa3a32ea87d28117cc7"
     redirect_uri = "http://localhost:8088/spotify-auth"
 
-    def __init__(self, access_token=None):
+    def __init__(self, access_token=""):
         self.access_token = access_token
 
-    def _send_request(self, method, url, data=None, authorization=False) -> dict:
-        if authorization:
-            headers = {
-                "Content-Type": "application/x-www-form-urlencoded",
-                "Authorization": "Basic "
-                + urlsafe_base64_encode(
-                    f"{self.client_id}:{self.client_secret_key}".encode()
-                ),
-            }
-
-        else:
-            headers = {"Authorization": "Bearer " + self.access_token}
-
+    @staticmethod
+    def _send_request(method, url, headers, data=None) -> Response:
         response = requests.request(method, url, headers=headers, data=data)
 
-        if response.status_code == 401:
-            raise SpotifyUnauthorizedRequest()
+        if not response.status_code == 200:
+            raise SpotifyWrongResponse()
+
+        return response
+
+    def _get_data(self, endpoint) -> dict:
+        headers = {"Authorization": "Bearer " + self.access_token}
+        response = self._send_request("get", endpoint, headers)
 
         return response.json()
 
@@ -54,18 +50,23 @@ class SpotifyClient:
 
     def get_access_token(self, authorization_code) -> str:
         endpoint = "https://accounts.spotify.com/api/token"
+        headers = {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": "Basic "
+            + urlsafe_base64_encode(
+                f"{self.client_id}:{self.client_secret_key}".encode()
+            ),
+        }
         data = {
             "code": authorization_code,
             "redirect_uri": self.redirect_uri,
             "grant_type": "authorization_code",
         }
-        response_data = self._send_request(
-            "post", endpoint, data=data, authorization=True
-        )
+        response = self._send_request("post", endpoint, headers=headers, data=data)
 
-        return response_data["access_token"]
+        return response.json()["access_token"]
 
     def get_user_profile_data(self) -> dict:
         endpoint = self.api_url + "me"
 
-        return self._send_request("get", endpoint)
+        return self._get_data(endpoint)

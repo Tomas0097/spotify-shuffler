@@ -1,2 +1,2 @@
-class SpotifyUnauthorizedRequest(Exception):
+class SpotifyWrongResponse(Exception):
     pass

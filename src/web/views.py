@@ -13,7 +13,7 @@ class ProfileView(TemplateView):
     template_name = "profile.html"
 
     def get_context_data(self, **kwargs):
-        access_token = self.request.session.get("access_token")
+        access_token = self.request.session.get("access_token", "")
         profile_data = SpotifyClient(access_token=access_token).get_user_profile_data()
 
         context_data = super().get_context_data(**kwargs)
@@ -50,5 +50,5 @@ class SpotifyLogoutView(View):
         return HttpResponseRedirect(reverse("web:homepage"))
 
 
-class SpotifySessionEnded(TemplateView):
-    template_name = "spotify-session-ended.html"
+class SpotifySessionError(TemplateView):
+    template_name = "spotify-session-error.html"
