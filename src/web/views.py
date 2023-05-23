@@ -7,7 +7,7 @@ from web.spotify_client import SpotifyClient
 from web.spotify_client.exceptions import SpotifyAuthenticationError
 
 
-class SpotifyAuthMixin:
+class SpotifyAuthenticationMixin:
     def get(self, request, *args, **kwargs):
         try:
             return super().get(request, *args, **kwargs)
@@ -53,7 +53,7 @@ class HomepageView(TemplateView):
     template_name = "homepage.html"
 
 
-class ProfileView(SpotifyAuthMixin, TemplateView):
+class ProfileView(SpotifyAuthenticationMixin, TemplateView):
     template_name = "profile.html"
 
     def get_context_data(self, **kwargs):
