@@ -12,7 +12,7 @@ urlpatterns = [
         name="homepage",
     ),
     path("profile/", views.ProfileView.as_view(), name="profile"),
-    path("spotify-auth/", views.SpotifyAuthView.as_view(), name="spotify-auth"),
+    path("spotify-link-account/", views.SpotifyLinkAccountView.as_view(), name="spotify-link-account"),
     path(
         "spotify-session-error/",
         views.SpotifySessionError.as_view(),

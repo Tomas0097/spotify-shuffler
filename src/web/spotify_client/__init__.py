@@ -3,7 +3,7 @@ from requests.models import Response
 
 from django.utils.http import urlencode, urlsafe_base64_encode
 
-from web.spotify_client.exceptions import SpotifyWrongResponse
+from web.spotify_client.exceptions import SpotifyAuthenticationError
 
 
 class SpotifyClient:
@@ -11,7 +11,7 @@ class SpotifyClient:
     api_url = "https://api.spotify.com/v1/"
     client_id = "77aee9b86365440d8b2849e168d01dee"
     client_secret_key = "2bcf35e555234fa3a32ea87d28117cc7"
-    redirect_uri = "http://localhost:8088/spotify-auth"
+    redirect_uri = "http://localhost:8088/spotify-link-account"
 
     def __init__(self, user_access_token=""):
         self.user_access_token = user_access_token
@@ -20,8 +20,8 @@ class SpotifyClient:
     def _send_request(method, url, headers, data=None) -> Response:
         response = requests.request(method, url, headers=headers, data=data)
 
-        if not response.status_code == 200:
-            raise SpotifyWrongResponse()
+        if not response.status_code == 401:
+            raise SpotifyAuthenticationError()
 
         return response
 

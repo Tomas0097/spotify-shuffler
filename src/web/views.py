@@ -1,30 +1,21 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import TemplateView, View
+from django.shortcuts import redirect
 from django.urls import reverse
+from django.views.generic import TemplateView, View
 
 from web.spotify_client import SpotifyClient
+from web.spotify_client.exceptions import SpotifyAuthenticationError
 
 
-class HomepageView(TemplateView):
-    template_name = "homepage.html"
+class SpotifyAuthMixin:
+    def get(self, request, *args, **kwargs):
+        try:
+            return super().get(request, *args, **kwargs)
+        except SpotifyAuthenticationError:
+            return redirect(reverse("web:spotify-session-error"))
 
 
-class ProfileView(TemplateView):
-    template_name = "profile.html"
-
-    def get_context_data(self, **kwargs):
-        user_access_token = self.request.session.get("user_access_token", "")
-        profile_data = SpotifyClient(
-            user_access_token=user_access_token
-        ).get_user_profile_data()
-
-        context_data = super().get_context_data(**kwargs)
-        context_data.update({"profile_name": profile_data["display_name"]})
-
-        return context_data
-
-
-class SpotifyAuthView(View):
+class SpotifyLinkAccountView(View):
     def get(self, request):
         authorization_code = request.GET.get("code")
         error = request.GET.get("error")
@@ -56,3 +47,22 @@ class SpotifyLogoutView(View):
 
 class SpotifySessionError(TemplateView):
     template_name = "spotify-session-error.html"
+
+
+class HomepageView(TemplateView):
+    template_name = "homepage.html"
+
+
+class ProfileView(SpotifyAuthMixin, TemplateView):
+    template_name = "profile.html"
+
+    def get_context_data(self, **kwargs):
+        user_access_token = self.request.session.get("user_access_token", "")
+        profile_data = SpotifyClient(
+            user_access_token=user_access_token
+        ).get_user_profile_data()
+
+        context_data = super().get_context_data(**kwargs)
+        context_data.update({"profile_name": profile_data["display_name"]})
+
+        return context_data

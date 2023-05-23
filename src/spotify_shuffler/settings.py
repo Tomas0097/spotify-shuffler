@@ -62,7 +62,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "web.spotify_client.middleware.SpotifyClientMiddleware",
 ]
 
 ROOT_URLCONF = "spotify_shuffler.urls"
