@@ -7,7 +7,7 @@ from web.spotify_client import SpotifyClient
 from web.spotify_client.exceptions import SpotifyAPIError
 
 
-class SpotifyErrorHandlerMixin:
+class SpotifyClientErrorHandlerMixin:
     def get(self, request, *args, **kwargs):
         try:
             return super().get(request, *args, **kwargs)
