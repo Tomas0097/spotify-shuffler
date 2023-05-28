@@ -12,7 +12,11 @@ urlpatterns = [
         main_views.HomepageView.as_view(),
         name="homepage",
     ),
-    path("profile/", main_views.ProfileView.as_view(), name="profile"),
+    path(
+        "profile/",
+         main_views.ProfileView.as_view(),
+         name="profile",
+    ),
     path(
         "spotify-link-account/",
         auth_views.SpotifyLinkAccountView.as_view(),
@@ -24,6 +28,8 @@ urlpatterns = [
         name="spotify-session-error",
     ),
     path(
-        "spotify-logout/", auth_views.SpotifyLogoutView.as_view(), name="spotify-logout"
+        "spotify-logout/",
+        auth_views.SpotifyLogoutView.as_view(),
+        name="spotify-logout",
     ),
 ]
