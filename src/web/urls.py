@@ -3,7 +3,6 @@ from django.urls import path
 from web.views import auth as auth_views
 from web.views import main as main_views
 
-
 app_name = "web"
 
 urlpatterns = [
@@ -14,8 +13,8 @@ urlpatterns = [
     ),
     path(
         "profile/",
-         main_views.ProfileView.as_view(),
-         name="profile",
+        main_views.ProfileView.as_view(),
+        name="profile",
     ),
     path(
         "spotify-link-account/",
