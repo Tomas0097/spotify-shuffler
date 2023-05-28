@@ -3,7 +3,7 @@ from requests.models import Response
 
 from django.utils.http import urlencode, urlsafe_base64_encode
 
-from web.spotify_client.exceptions import SpotifyAuthenticationError
+from web.spotify_client.exceptions import SpotifyAPIError
 
 
 class SpotifyClient:
@@ -20,8 +20,8 @@ class SpotifyClient:
     def _send_request(method, url, headers, data=None) -> Response:
         response = requests.request(method, url, headers=headers, data=data)
 
-        if not response.status_code == 401:
-            raise SpotifyAuthenticationError()
+        if not response.status_code == 200:
+            raise SpotifyAPIError()
 
         return response
 

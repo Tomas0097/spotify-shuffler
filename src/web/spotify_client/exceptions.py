@@ -1,2 +1,2 @@
-class SpotifyAuthenticationError(Exception):
+class SpotifyAPIError(Exception):
     pass

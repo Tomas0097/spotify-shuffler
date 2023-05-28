@@ -4,14 +4,14 @@ from django.urls import reverse
 from django.views.generic import TemplateView, View
 
 from web.spotify_client import SpotifyClient
-from web.spotify_client.exceptions import SpotifyAuthenticationError
+from web.spotify_client.exceptions import SpotifyAPIError
 
 
-class SpotifyAuthenticationMixin:
+class SpotifyAPIErrorHandlerMixin:
     def get(self, request, *args, **kwargs):
         try:
             return super().get(request, *args, **kwargs)
-        except SpotifyAuthenticationError:
+        except SpotifyAPIError:
             return redirect(reverse("web:spotify-session-error"))
 
 
@@ -53,7 +53,7 @@ class HomepageView(TemplateView):
     template_name = "homepage.html"
 
 
-class ProfileView(SpotifyAuthenticationMixin, TemplateView):
+class ProfileView(SpotifyAPIErrorHandlerMixin, TemplateView):
     template_name = "profile.html"
 
     def get_context_data(self, **kwargs):
