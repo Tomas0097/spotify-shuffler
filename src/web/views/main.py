@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from web.spotify_client import SpotifyClient
 from web.views.auth import SpotifyErrorHandlerMixin
 
+
 class HomepageView(TemplateView):
     template_name = "homepage.html"
 
