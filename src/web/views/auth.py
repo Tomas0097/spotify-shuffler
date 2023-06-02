@@ -1,18 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView, View
 
 from web.spotify_client import SpotifyClient
-from web.spotify_client.exceptions import SpotifyAPIError
-
-
-class SpotifyClientErrorHandlerMixin:
-    def dispatch(self, request, *args, **kwargs):
-        try:
-            return super().dispatch(request, *args, **kwargs)
-        except SpotifyAPIError:
-            return redirect(reverse("web:spotify-session-error"))
 
 
 class SpotifyLinkAccountView(View):
