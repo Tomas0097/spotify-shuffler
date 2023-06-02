@@ -1,9 +1,10 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 from django.urls import reverse
 
 from web.spotify_client import SpotifyClient
-from web.spotify_client.exceptions import SpotifyAPIError
+from web.spotify_client.exceptions import SpotifyAPIError, SpotifyAPIUnauthenticatedUser
 
 
 class SpotifyClientView(TemplateView):
@@ -18,7 +19,13 @@ class SpotifyClientView(TemplateView):
         try:
             return super().dispatch(request, *args, **kwargs)
         except SpotifyAPIError:
-            return redirect(reverse("web:spotify-session-error"))
+            return redirect(reverse("web:spotify-api-error"))
+        except SpotifyAPIUnauthenticatedUser:
+            return HttpResponseRedirect(reverse("web:spotify-link-account"))
+
+
+class SpotifyAPIErrorView(TemplateView):
+    template_name = "spotify-api-error.html"
 
 
 class HomepageView(TemplateView):

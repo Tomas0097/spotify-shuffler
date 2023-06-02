@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
-from django.views.generic import TemplateView, View
+from django.views.generic import View
 
 from web.spotify_client import SpotifyClient
 
@@ -33,7 +33,3 @@ class SpotifyLogoutView(View):
         del request.session["user_access_token"]
 
         return HttpResponseRedirect(reverse("web:homepage"))
-
-
-class SpotifySessionError(TemplateView):
-    template_name = "spotify-session-error.html"

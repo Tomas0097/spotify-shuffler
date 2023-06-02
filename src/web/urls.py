@@ -22,13 +22,13 @@ urlpatterns = [
         name="spotify-link-account",
     ),
     path(
-        "spotify-session-error/",
-        auth_views.SpotifySessionError.as_view(),
-        name="spotify-session-error",
-    ),
-    path(
         "spotify-logout/",
         auth_views.SpotifyLogoutView.as_view(),
         name="spotify-logout",
+    ),
+    path(
+        "spotify-api-error/",
+        main_views.SpotifyAPIErrorView.as_view(),
+        name="spotify-api-error",
     ),
 ]
