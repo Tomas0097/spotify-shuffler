@@ -8,9 +8,9 @@ from web.spotify_client.exceptions import SpotifyAPIError
 
 
 class SpotifyClientErrorHandlerMixin:
-    def get(self, request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         try:
-            return super().get(request, *args, **kwargs)
+            return super().dispatch(request, *args, **kwargs)
         except SpotifyAPIError:
             return redirect(reverse("web:spotify-session-error"))
 
