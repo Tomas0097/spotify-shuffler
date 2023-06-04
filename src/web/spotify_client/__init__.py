@@ -3,17 +3,18 @@ from requests.models import Response
 
 from django.utils.http import urlencode, urlsafe_base64_encode
 
+from web.models import Configuration
 from web.spotify_client.exceptions import SpotifyAPIError, SpotifyAPIUnauthenticatedUser
 
 
 class SpotifyClient:
-    api_scope = "user-read-private user-read-email"
-    api_url = "https://api.spotify.com/v1/"
-    client_id = "77aee9b86365440d8b2849e168d01dee"
-    client_secret_key = "2bcf35e555234fa3a32ea87d28117cc7"
-    redirect_uri = "http://localhost:8088/spotify-link-account"
-
     def __init__(self, user_access_token=""):
+        config = Configuration.objects.last()
+        self.api_url = config.spotify_api_url
+        self.client_id = config.spotify_client_id
+        self.client_secret_key = config.spotify_client_secret_key
+        self.api_scope = config.spotify_api_scope
+        self.redirect_uri = config.spotify_redirect_uri
         self.user_access_token = user_access_token
 
     @staticmethod
