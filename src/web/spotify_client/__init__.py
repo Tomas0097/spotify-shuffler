@@ -37,17 +37,12 @@ class SpotifyClient:
         return response.json()
 
     def get_authorization_url(self) -> str:
-        # TODO: The state should be randomly generated 16 character long string. Saving this value
-        #       before requesting Spotify auth and verifying the match in the callback is very
-        #       recommended by Spotify API documentation.
-        state = "abcdefghijklmnop"
         params = urlencode(
             {
                 "response_type": "code",
                 "client_id": self.client_id,
                 "scope": self.api_scope,
                 "redirect_uri": self.redirect_uri,
-                "state": state,
             }
         )
 
