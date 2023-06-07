@@ -6,10 +6,10 @@ from django.urls import reverse
 from django.views.generic import View
 
 from web.spotify_client.exceptions import SpotifyAPIError
-from web.views.main import SpotifyClientView
+from web.views.main import SpotifyClientMixin
 
 
-class SpotifyLinkAccountView(SpotifyClientView):
+class SpotifyLinkAccountView(SpotifyClientMixin, View):
     def get(self, request, *args, **kwargs):
         start_auth = request.GET.get("start_auth")
         authorization_code = request.GET.get("code")

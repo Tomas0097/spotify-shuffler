@@ -7,7 +7,7 @@ from web.spotify_client import SpotifyClient
 from web.spotify_client.exceptions import SpotifyAPIError, SpotifyAPIUnauthenticatedUser
 
 
-class SpotifyClientView(TemplateView):
+class SpotifyClientMixin:
     spotify_client: SpotifyClient
 
     def setup(self, request, *args, **kwargs):
@@ -32,7 +32,7 @@ class HomepageView(TemplateView):
     template_name = "homepage.html"
 
 
-class ProfileView(SpotifyClientView):
+class ProfileView(SpotifyClientMixin, TemplateView):
     template_name = "profile.html"
 
     def get_context_data(self, **kwargs):
