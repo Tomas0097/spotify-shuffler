@@ -39,7 +39,7 @@ class SpotifyLinkAccountView(SpotifyClientView):
     @staticmethod
     def _generate_random_string():
         chars = string.ascii_letters + string.digits
-        return ''.join(secrets.choice(chars) for _ in range(16))
+        return "".join(secrets.choice(chars) for _ in range(16))
 
 
 class SpotifyLogoutView(View):

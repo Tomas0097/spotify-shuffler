@@ -16,6 +16,6 @@ class SettingsAdmin(admin.ModelAdmin):
                     "spotify_api_scope",
                     "spotify_redirect_uri",
                 )
-            }
+            },
         ),
     )
