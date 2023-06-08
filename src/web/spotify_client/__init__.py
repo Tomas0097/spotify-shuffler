@@ -70,3 +70,8 @@ class SpotifyClient:
         endpoint = self.api_url + "me"
 
         return self._get_data(endpoint)
+
+    def get_user_playlists_data(self) -> dict:
+        endpoint = self.api_url + "me/playlists"
+
+        return self._get_data(endpoint)

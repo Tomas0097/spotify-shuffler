@@ -37,7 +37,12 @@ class ProfileView(SpotifyClientMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         profile_data = self.spotify_client.get_user_profile_data()
+        playlists_data = self.spotify_client.get_user_playlists_data()
         context_data = super().get_context_data(**kwargs)
-        context_data.update({"profile_name": profile_data["display_name"]})
-
+        context_data.update(
+            {
+                "profile_name": profile_data["display_name"],
+                "playlists": playlists_data["items"],
+            }
+        )
         return context_data

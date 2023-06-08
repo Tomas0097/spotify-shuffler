@@ -6,4 +6,32 @@
     <b>name</b>: {{ profile_name }}
     <br><br>
     <a href="{% url 'web:spotify-logout' %}"><button>Logout</button></a>
+    <br><br>
+    <table>
+        <thead>
+            <tr>
+                <th>playlist name</th>
+                <th>tracks total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for playlist in playlists %}
+                <tr>
+                    <td>{{ playlist.name }}</td>
+                    <td>{{ playlist.tracks.total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <style>
+        table {
+            table-layout: auto;
+            width: 500px;
+            background-color: lightgray;
+        }
+
+        td {background-color: white;}
+    </style>
+
 {% endblock %}
