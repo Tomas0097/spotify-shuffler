@@ -3,6 +3,5 @@
 {% block content %}
     <b>Homepage</b>
     <br><br>
-{#    <button onclick="spotifyShuffler.startSpotifyAuthorizing()">Link Spotify Account</button>#}
     <a href="{% url 'web:spotify-link-account' %}?start_auth=true"><button>Link Spotify Account</button></a>
 {% endblock %}
