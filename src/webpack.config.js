@@ -6,6 +6,5 @@ module.exports = {
   output: {
     filename: 'build.js',
     path: path.resolve(__dirname, 'web/static/dist/js'),
-    library: "spotifyShuffler",
   },
 };
