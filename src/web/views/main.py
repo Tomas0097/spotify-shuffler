@@ -1,6 +1,6 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import redirect
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 from django.urls import reverse
 
 from web.spotify_client import SpotifyClient
@@ -46,3 +46,11 @@ class ProfileView(SpotifyClientMixin, TemplateView):
             }
         )
         return context_data
+
+
+class GetPlaylistTracks(SpotifyClientMixin, View):
+    def get(self, request, *args, **kwargs):
+        playlist_id = self.kwargs["playlist_id"]
+        playlist_tracks_data = self.spotify_client.get_playlist_tracks_data(playlist_id)
+
+        return JsonResponse(playlist_tracks_data)

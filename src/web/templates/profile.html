@@ -7,31 +7,43 @@
     <br><br>
     <a href="{% url 'web:spotify-logout' %}"><button>Logout</button></a>
     <br><br>
-    <table>
-        <thead>
-            <tr>
-                <th>playlist name</th>
-                <th>tracks total</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for playlist in playlists %}
+
+    <div class="playlists-container">
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ playlist.name }}</td>
-                    <td>{{ playlist.tracks.total }}</td>
+                    <th>playlist name</th>
+                    <th>tracks total</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for playlist in playlists %}
+                    <tr>
+                        <td>
+                            <a class="playlist-name-clickable" onclick="showPlaylistTracks('{{ playlist.id }}')">
+                                {{ playlist.name }}
+                            </a>
+                        </td>
+                        <td>{{ playlist.tracks.total }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="playlist-tracks-container"></div>
+    </div>
 
     <style>
-        table {
+        .playlists-container {display: flex; align-items: start}
+
+        .playlists-container table {
             table-layout: auto;
             width: 500px;
             background-color: lightgray;
         }
 
-        td {background-color: white;}
+        .playlists-container td {background-color: white}
+
+        .playlist-name-clickable {cursor: pointer; color: blue}
     </style>
 
 {% endblock %}
