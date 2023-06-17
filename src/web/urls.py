@@ -17,9 +17,9 @@ urlpatterns = [
         name="profile",
     ),
     path(
-        "get-playlist-tracks/<str:playlist_id>/",
-        main_views.GetPlaylistTracks.as_view(),
-        name="get-playlist-tracks",
+        "get-playlist/<str:playlist_id>/",
+        main_views.GetPlaylist.as_view(),
+        name="get-playlist",
     ),
     path(
         "spotify-link-account/",
