@@ -9,7 +9,7 @@ from web.spotify_client.exceptions import SpotifyAPIError, SpotifyAPIUnauthentic
 
 class SpotifyClient:
     def __init__(self, user_access_token=""):
-        config = Configuration.objects.last()
+        config = Configuration.objects.last()  # todo: Handle situation where model Configuration doesn't have any record.
         self.api_url = config.spotify_api_url
         self.client_id = config.spotify_client_id
         self.client_secret_key = config.spotify_client_secret_key
