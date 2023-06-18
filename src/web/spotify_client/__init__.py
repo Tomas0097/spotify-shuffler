@@ -87,7 +87,9 @@ class SpotifyClient:
         # Spotify API limits track retrieval to 50 per request, requiring
         # multiple requests for playlists with over 50 tracks.
         while playlist_tracks_total > offset:
-            endpoint_playlist_tracks_batch = self.api_url + f"playlists/{playlist_id}/tracks?offset={offset}"
+            query_offset = f"offset={offset}"
+            query_fields = "fields=items(track(id, name, artists(name)))"
+            endpoint_playlist_tracks_batch = self.api_url + f"playlists/{playlist_id}/tracks?{query_offset}&{query_fields}"
             playlist_tracks_batch_data = self._get_data(endpoint_playlist_tracks_batch)
             playlist_tracks_data.extend(playlist_tracks_batch_data["items"])
             offset += 50
