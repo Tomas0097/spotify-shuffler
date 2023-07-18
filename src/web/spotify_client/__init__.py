@@ -92,7 +92,7 @@ class SpotifyClient:
             endpoint_playlist_tracks_batch = self.api_url + f"playlists/{playlist_id}/tracks?{query_offset}&{query_fields}"
             playlist_tracks_batch_data = self._get_data(endpoint_playlist_tracks_batch)
             playlist_tracks_data.extend(playlist_tracks_batch_data["items"])
-            offset += 50
+            offset += 100
 
         playlist_data["tracks"]["items"] = playlist_tracks_data
 
