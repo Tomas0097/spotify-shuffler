@@ -77,6 +77,23 @@ class SpotifyClient:
         return self._get_data(endpoint)
 
     def get_playlist_data(self, playlist_id) -> dict:
-        endpoint = self.api_url + f"playlists/{playlist_id}"
+        endpoint_playlist = self.api_url + f"playlists/{playlist_id}"
+        playlist_data = self._get_data(endpoint_playlist)
+        playlist_tracks_total = playlist_data["tracks"]["total"]
 
-        return self._get_data(endpoint)
+        playlist_tracks_data = []
+        offset = 0
+
+        # Spotify API limits track retrieval to 50 per request, requiring
+        # multiple requests for playlists with over 50 tracks.
+        while playlist_tracks_total > offset:
+            query_offset = f"offset={offset}"
+            query_fields = "fields=items(track(id, name, artists(name)))"
+            endpoint_playlist_tracks_batch = self.api_url + f"playlists/{playlist_id}/tracks?{query_offset}&{query_fields}"
+            playlist_tracks_batch_data = self._get_data(endpoint_playlist_tracks_batch)
+            playlist_tracks_data.extend(playlist_tracks_batch_data["items"])
+            offset += 100
+
+        playlist_data["tracks"]["items"] = playlist_tracks_data
+
+        return playlist_data
