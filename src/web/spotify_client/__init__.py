@@ -9,7 +9,9 @@ from web.spotify_client.exceptions import SpotifyAPIError, SpotifyAPIUnauthentic
 
 class SpotifyClient:
     def __init__(self, user_access_token=""):
-        config = Configuration.objects.last()  # todo: Handle situation where model Configuration doesn't have any record.
+        config = (
+            Configuration.objects.last()
+        )  # todo: Handle situation where model Configuration doesn't have any record.
         self.api_url = config.spotify_api_url
         self.client_id = config.spotify_client_id
         self.client_secret_key = config.spotify_client_secret_key
@@ -89,7 +91,10 @@ class SpotifyClient:
         while playlist_tracks_total > offset:
             query_offset = f"offset={offset}"
             query_fields = "fields=items(track(id, name, artists(name)))"
-            endpoint_playlist_tracks_batch = self.api_url + f"playlists/{playlist_id}/tracks?{query_offset}&{query_fields}"
+            endpoint_playlist_tracks_batch = (
+                self.api_url
+                + f"playlists/{playlist_id}/tracks?{query_offset}&{query_fields}"
+            )
             playlist_tracks_batch_data = self._get_data(endpoint_playlist_tracks_batch)
             playlist_tracks_data.extend(playlist_tracks_batch_data["items"])
             offset += 100
