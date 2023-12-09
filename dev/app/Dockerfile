@@ -1,6 +1,6 @@
 # This image must be built from the project root folder. In this case, use
 # this script: docker build -t flakooo/myprojects:spotify-shuffler-app -f dev/app/Dockerfile .
-FROM python:3.12-rc-bullseye
+FROM python:3.10.12-bullseye
 RUN mkdir /opt/spotify-shuffler
 WORKDIR /opt/spotify-shuffler
 

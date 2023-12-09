@@ -1,3 +1,7 @@
+import math
+
+import aiohttp
+import asyncio
 import requests
 from requests.models import Response
 
@@ -37,6 +41,28 @@ class SpotifyClient:
         response = self._send_request("get", endpoint, headers)
 
         return response.json()
+
+    @staticmethod
+    async def _send_request_async(url, session):
+        response = await session.get(url)
+
+        if response.status == 200:
+            pass
+        elif response.status == 401:
+            raise SpotifyAPIUnauthenticatedUser()
+        else:
+            raise SpotifyAPIError()
+
+        return await response.json()
+
+    async def _get_data_async(self, endpoints: list[str]) -> list[dict[]]:
+        headers = {"Authorization": "Bearer " + self.user_access_token}
+
+        async with aiohttp.ClientSession(headers=headers) as session:
+            tasks = [self._send_request_async(url, session) for url in endpoints]
+            results = await asyncio.gather(*tasks)
+
+            return results
 
     def get_authorization_url(self) -> str:
         params = urlencode(
@@ -83,21 +109,29 @@ class SpotifyClient:
         playlist_data = self._get_data(endpoint_playlist)
         playlist_tracks_total = playlist_data["tracks"]["total"]
 
-        playlist_tracks_data = []
-        offset = 0
+        # Spotify API limits track retrieval to 100 per request, requiring
+        # multiple requests for playlists with over 100 tracks.
+        max_limit_offset = 100
+        required_requests_count = math.ceil(playlist_tracks_total / max_limit_offset)
 
-        # Spotify API limits track retrieval to 50 per request, requiring
-        # multiple requests for playlists with over 50 tracks.
-        while playlist_tracks_total > offset:
-            query_offset = f"offset={offset}"
-            query_fields = "fields=items(track(id, name, artists(name)))"
-            endpoint_playlist_tracks_batch = (
-                self.api_url
-                + f"playlists/{playlist_id}/tracks?{query_offset}&{query_fields}"
-            )
-            playlist_tracks_batch_data = self._get_data(endpoint_playlist_tracks_batch)
+        query_fields = "fields=items(track(id, name, artists(name)))"
+        endpoint_playlist_tracks_url = (
+            self.api_url + f"playlists/{playlist_id}/tracks?{query_fields}"
+        )
+
+        endpoint_playlist_tracks_batches_urls = [
+            endpoint_playlist_tracks_url + f"&offset={number * max_limit_offset}"
+            for number in range(required_requests_count)
+        ]
+
+        playlist_tracks_batches_data = asyncio.run(
+            self._get_data_async(endpoint_playlist_tracks_batches_urls)
+        )
+
+        playlist_tracks_data = []
+
+        for playlist_tracks_batch_data in playlist_tracks_batches_data:
             playlist_tracks_data.extend(playlist_tracks_batch_data["items"])
-            offset += 100
 
         playlist_data["tracks"]["items"] = playlist_tracks_data
 
