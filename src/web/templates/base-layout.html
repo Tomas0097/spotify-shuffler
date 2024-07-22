@@ -9,6 +9,7 @@
         {% block content %}
         {% endblock %}
 
+        <script type="text/javascript" src="{% url 'reverse_js' %}"></script>
         <script type="text/javascript" src="{% static 'dist/js/build.js' %}?v={{ CURRENT_FRONTEND_VERSION }}"></script>
     </body>
 </html>

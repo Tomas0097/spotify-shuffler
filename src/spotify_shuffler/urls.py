@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django_reverse_js.views import urls_js
 
 urlpatterns = [
     path("", include("web.urls", namespace="web")),
+    path("reverse.js", urls_js, name="reverse_js"),
     path("admin/", admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
